@@ -290,7 +290,7 @@ function fetchExchangeRateForLastHour(baseCurrency, quoteCurrency) {
     const encodedStartDate = encodeURIComponent(formattedStartDate);
     const encodedEndDate = encodeURIComponent(formattedEndDate);
 
-    axios.get(`https://marketdata.tradermade.com/api/v1/timeseries?currency=${baseCurrency + quoteCurrency}&start_date=${encodedStartDate}&end_date=${encodedEndDate}&interval=minute&period=5&api_key=UkWxobFCeRY4JpKWyoMp`)
+    axios.get(`https://marketdata.tradermade.com/api/v1/timeseries?currency=${baseCurrency + quoteCurrency}&start_date=${encodedStartDate}&end_date=${encodedEndDate}&interval=minute&period=5&api_key=uoLtCl1Rn2Yc6JjRjT69`)
         .then(response => {
             console.log(response.data);
 
@@ -335,7 +335,7 @@ function fetchExchangeRateForLastMinute(baseCurrency, quoteCurrency) {
     const encodedStartDate = encodeURIComponent(formattedStartDate);
     const encodedEndDate = encodeURIComponent(formattedEndDate);
 
-    axios.get(`https://marketdata.tradermade.com/api/v1/timeseries?currency=${baseCurrency + quoteCurrency}&start_date=${encodedStartDate}&end_date=${encodedEndDate}&interval=minute&period=1&api_key=UkWxobFCeRY4JpKWyoMp`)
+    axios.get(`https://marketdata.tradermade.com/api/v1/timeseries?currency=${baseCurrency + quoteCurrency}&start_date=${encodedStartDate}&end_date=${encodedEndDate}&interval=minute&period=1&api_key=uoLtCl1Rn2Yc6JjRjT69`)
         .then(response => {
             console.log(response.data);
 
@@ -374,7 +374,7 @@ function fetchExchangeRateForWeek(baseCurrency, quoteCurrency) {
     startDate.setDate(startDate.getDate() - 7);
     const formattedStartDate = startDate.toISOString().slice(0, 10);
 
-    axios.get(`https://marketdata.tradermade.com/api/v1/timeseries?currency=${baseCurrency + quoteCurrency}&start_date=${formattedStartDate}&end_date=${formattedEndDate}&api_key=UkWxobFCeRY4JpKWyoMp`)
+    axios.get(`https://marketdata.tradermade.com/api/v1/timeseries?currency=${baseCurrency + quoteCurrency}&start_date=${formattedStartDate}&end_date=${formattedEndDate}&api_key=uoLtCl1Rn2Yc6JjRjT69`)
         .then(response => {
             console.log(response.data);
 
@@ -411,7 +411,7 @@ function fetchExchangeRate(baseCurrency, quoteCurrency) {
     startDate.setDate(startDate.getDate() - 1);
     const formattedStartDate = startDate.toISOString().slice(0, 10);
 
-    axios.get(`https://marketdata.tradermade.com/api/v1/timeseries?currency=${baseCurrency + quoteCurrency}&start_date=${formattedStartDate}&end_date=${formattedEndDate}&api_key=UkWxobFCeRY4JpKWyoMp`)
+    axios.get(`https://marketdata.tradermade.com/api/v1/timeseries?currency=${baseCurrency + quoteCurrency}&start_date=${formattedStartDate}&end_date=${formattedEndDate}&api_key=uoLtCl1Rn2Yc6JjRjT69`)
         .then(response => {
             console.log(response.data);
 
@@ -450,7 +450,7 @@ function fetchExchangeRateForLastMonth(baseCurrency, quoteCurrency) {
     startDate.setMonth(startDate.getMonth() - 1);
     const formattedStartDate = startDate.toISOString().slice(0, 10);
 
-    axios.get(`https://marketdata.tradermade.com/api/v1/timeseries?currency=${baseCurrency + quoteCurrency}&start_date=${formattedStartDate}&end_date=${formattedEndDate}&api_key=UkWxobFCeRY4JpKWyoMp`)
+    axios.get(`https://marketdata.tradermade.com/api/v1/timeseries?currency=${baseCurrency + quoteCurrency}&start_date=${formattedStartDate}&end_date=${formattedEndDate}&api_key=uoLtCl1Rn2Yc6JjRjT69`)
         .then(response => {
             console.log(response.data);
 
@@ -552,7 +552,7 @@ function fetchAndStoreCurrencies() {
         currencyDropdown('quote-currency', currencies, 'US Dollar');
         initializeExchangeRates();
     } else {
-        axios.get('https://marketdata.tradermade.com/api/v1/live_currencies_list?api_key=UkWxobFCeRY4JpKWyoMp')
+        axios.get('https://marketdata.tradermade.com/api/v1/live_currencies_list?api_key=uoLtCl1Rn2Yc6JjRjT69')
             .then(response => {
                 const currencies = response.data.available_currencies;
                 localStorage.setItem('available_currencies', JSON.stringify(currencies));
