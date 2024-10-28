@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forex Exchange</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css">
+    <link rel="stylesheet" href="/content/styles/css/style.css">
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Forex Exchange</h1>
+        <p>Check out the current price for a currency pair</p>
+        <div class="container__body">
+            
+            <div class="container__currency">
+                <select id="base-currency">
+                   
+                </select>
+    
+                <select id="quote-currency">
+                   
+                </select>
+            </div>
+    
+            <div class="container__content">
+                <div class="content__header">
+                    <div class="flags">
+                        <span id="flag1" class="fi fi-eu"></span> 
+                        <span id="flag2" class="fi fi-us"></span>
+                    </div>
+                    <span class="bg-color">Forex.com</span>
+                  
+                </div>
+                <div class="rate-display"> 
+                    <p id="currency-pair"><span id="symbol"></span></p>
+                    <span id="current-rate"></span>
+                </div>
+                <div class="averages">
+                    <span id="averg-rate"></span><span id="average"></span>
+                </div>
+                
+        
+                <div class="chart-container">
+                    <canvas id="exchangeRateChart" width="400" height="200"></canvas>
+                </div>
+        
+                <div class="time-frame-selector">
+                    <button id="min" class="active" data-timeframe="15M">15M</button>
+                    <button id="hour" data-timeframe="1H">1H</button>
+                    <button id="day" data-timeframe="1D">1D</button>
+                    <button id="week" data-timeframe="1W">1W</button>
+                    <button id="month" data-timeframe="1M">1M</button>
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script src="/content/js/script.js"></script>
+</body>
+</html>
