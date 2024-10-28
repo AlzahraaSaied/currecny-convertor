@@ -2,39 +2,39 @@ let currentChart = null;
 
 const currencyFlags = {
     'AED': 'ae', 
-    'AFN': 'af', // Afghan Afghani
-    'ALL': 'al', // Albanian Lek
-    'AMD': 'am', // Armenian Dram
-    'ANG': 'an', // Netherlands Antillean Guilder
-    'AOA': 'ao', // Angolan Kwanza
-    'ARS': 'ar', // Argentine Peso
-    'AUD': 'au', // Australian Dollar
-    'AWG': 'aw', // Aruban Florin
-    'AZN': 'az', // Azerbaijani Manat
-    'BAM': 'ba', // Bosnia and Herzegovina Convertible Mark
-    'BBD': 'bb', // Barbadian Dollar
-    'BDT': 'bd', // Bangladeshi Taka
-    'BGN': 'bg', // Bulgarian Lev
-    'BHD': 'bh', // Bahraini Dinar
-    'BIF': 'bi', // Burundian Franc
-    'BMD': 'bm', // Bermudian Dollar
-    'BND': 'bn', // Brunei Dollar
-    'BOB': 'bo', // Bolivian Boliviano
-    'BRL': 'br', // Brazilian Real
-    'BSD': 'bs', // Bahamian Dollar
-    'BTN': 'bt', // Bhutanese Ngultrum
-    'BWP': 'bw', // Botswana Pula
-    'BYN': 'by', // Belarusian Ruble
-    'BZD': 'bz', // Belize Dollar
-    'CAD': 'ca', // Canadian Dollar
-    'CDF': 'cd', // Congolese Franc
-    'CHF': 'ch', // Swiss Franc
-    'CLP': 'cl', // Chilean Peso
-    'CNY': 'cn', // Chinese Yuan
-    'COP': 'co', // Colombian Peso
-    'CRC': 'cr', // Costa Rican Colón
-    'CUP': 'cu', // Cuban Peso
-    'CVE': 'cv', // Cape Verdean Escudo
+    'AFN': 'af', 
+    'ALL': 'al',
+    'AMD': 'am',
+    'ANG': 'an', 
+    'AOA': 'ao',
+    'ARS': 'ar',
+    'AUD': 'au',
+    'AWG': 'aw',
+    'AZN': 'az', 
+    'BAM': 'ba', 
+    'BBD': 'bb', 
+    'BDT': 'bd', 
+    'BGN': 'bg', 
+    'BHD': 'bh', 
+    'BIF': 'bi',
+    'BMD': 'bm', 
+    'BND': 'bn',
+    'BOB': 'bo', 
+    'BRL': 'br', 
+    'BSD': 'bs', 
+    'BTN': 'bt', 
+    'BWP': 'bw', 
+    'BYN': 'by', 
+    'BZD': 'bz', 
+    'CAD': 'ca', 
+    'CDF': 'cd', 
+    'CHF': 'ch', 
+    'CLP': 'cl',
+    'CNY': 'cn',
+    'COP': 'co',
+    'CRC': 'cr', 
+    'CUP': 'cu',
+    'CVE': 'cv',
     'CZK': 'cz', // Czech Koruna
     'DKK': 'dk', // Danish Krone
     'DOP': 'do', // Dominican Peso
@@ -158,7 +158,7 @@ const currencyFlags = {
     'ZMW': 'zm', // Zambian Kwacha
     'ZWL': 'zw', // Zimbabwean Dollar
 };
-const currencySymbols = {
+/* const currencySymbols = {
     AED: "د.إ",
     ALL: "L",
     AMD: "֏",
@@ -234,7 +234,7 @@ const currencySymbols = {
     XPT: "Pt",
     ZAR: "R",
     ZWL: "$",
-};
+}; */
 function currencyDropdown(selectElementId, available_currencies, defaultCurrency) {
     const selectElement = document.getElementById(selectElementId);
     selectElement.innerHTML = '';
@@ -254,23 +254,38 @@ function currencyDropdown(selectElementId, available_currencies, defaultCurrency
 function formatDateToLocal(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate() - 2).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     return `${year}-${month}-${day}-${hours}:${minutes}`;
 }
 
+/* function getTodaysUtcTime() {
+    const today = new Date();
+    const year = today.getUTCFullYear();
+    const month = today.getUTCMonth(); // Months are 0-indexed (January is 0)
+    const day = today.getUTCDate();
+    const hours = 0; // Set to 0 for the start of the day
+    const minutes = 0;
+    const seconds = 0;
+  
+    const utcTimestamp = Date.UTC(year, month, day, hours, minutes, seconds);
+    const utcDate = new Date(utcTimestamp);
+  
+    return utcDate;
+  }
+  
+  const todaysUtcTime = getTodaysUtcTime();
+  console.log(todaysUtcTime); */
 
 
 function fetchExchangeRateForLastHour(baseCurrency, quoteCurrency) {
     const endDate = new Date();
-    endDate.setDate(endDate.getDate() - 2);
+    
+    const formattedEndDate = endDate.toISOString().split('T')[0] + 'T' + endDate.toISOString().split('T')[1].slice(0, 8) + 'Z';
+
     const startDate = new Date(endDate.getTime() - 60 * 60 * 1000);
-    const formattedEndDate = formatDateToLocal(endDate);
-    const formattedStartDate = formatDateToLocal(startDate);
-    /* 
-        console.log("Formatted Start Date:", formattedStartDate);
-        console.log("Formatted End Date:", formattedEndDate); */
+    const formattedStartDate = startDate.toISOString().split('T')[0] + 'T' + startDate.toISOString().split('T')[1].slice(0, 8) + 'Z';
 
     const encodedStartDate = encodeURIComponent(formattedStartDate);
     const encodedEndDate = encodeURIComponent(formattedEndDate);
@@ -290,13 +305,14 @@ function fetchExchangeRateForLastHour(baseCurrency, quoteCurrency) {
             const averageValue = (averageClose / 100).toFixed(6);
             document.getElementById('averg-rate').textContent = `${averageValue}`;
             document.getElementById('average').textContent = `(${averageValue}%)`;
-            
+
             const lastQuote = quotes[quotes.length - 1];
             const exchange = lastQuote?.close;
             document.getElementById('current-rate').textContent = `${exchange}`;
 
             const pair = `${baseCurrency}/${quoteCurrency}`;
             document.getElementById('currency-pair').textContent = pair;
+
             const timestamps = quotes.map(quote => quote.date);
             const closeRates = quotes.map(quote => quote.close);
 
@@ -305,20 +321,20 @@ function fetchExchangeRateForLastHour(baseCurrency, quoteCurrency) {
         .catch(error => {
             console.error('Error fetching the exchange rate:', error);
         });
-
 }
+
 
 function fetchExchangeRateForLastMinute(baseCurrency, quoteCurrency) {
     const endDate = new Date();
-    endDate.setDate(endDate.getDate()-1);
+
+    const formattedEndDate = endDate.toISOString().split('T')[0] + 'T' + endDate.toISOString().split('T')[1].slice(0, 8) + 'Z';
+
     const startDate = new Date(endDate.getTime() - 15 * 60 * 1000);
-    const formattedEndDate = formatDateToLocal(endDate);
-    const formattedStartDate = formatDateToLocal(startDate);
+    const formattedStartDate = startDate.toISOString().split('T')[0] + 'T' + startDate.toISOString().split('T')[1].slice(0, 8) + 'Z';
 
     const encodedStartDate = encodeURIComponent(formattedStartDate);
     const encodedEndDate = encodeURIComponent(formattedEndDate);
 
-   
     axios.get(`https://marketdata.tradermade.com/api/v1/timeseries?currency=${baseCurrency + quoteCurrency}&start_date=${encodedStartDate}&end_date=${encodedEndDate}&interval=minute&period=1&api_key=UkWxobFCeRY4JpKWyoMp`)
         .then(response => {
             console.log(response.data);
@@ -328,7 +344,7 @@ function fetchExchangeRateForLastMinute(baseCurrency, quoteCurrency) {
                 console.warn('No quotes available for the selected date(s). Please check the dates.');
                 return;
             }
-            
+
             const totalClose = quotes.reduce((acc, quote) => acc + quote.close, 0);
             const averageClose = totalClose / quotes.length;
             const averageValue = (averageClose / 100).toFixed(6);
@@ -346,8 +362,8 @@ function fetchExchangeRateForLastMinute(baseCurrency, quoteCurrency) {
         .catch(error => {
             console.error('Error fetching the exchange rate:', error);
         });
-
 }
+
 
 
 function fetchExchangeRateForWeek(baseCurrency, quoteCurrency) {
@@ -389,27 +405,22 @@ function fetchExchangeRateForWeek(baseCurrency, quoteCurrency) {
 
 function fetchExchangeRate(baseCurrency, quoteCurrency) {
     const endDate = new Date();
-    endDate.setDate(endDate.getDate());
+    const formattedEndDate = endDate.toISOString().slice(0, 10);
 
-    const startDate = new Date(endDate.getTime() - 24 * 60 * 60 * 1000); 
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 1);
+    const formattedStartDate = startDate.toISOString().slice(0, 10);
 
-    const formattedEndDate = formatDateToLocal(endDate);
-    const formattedStartDate = formatDateToLocal(startDate);
-
-
-    const encodedStartDate = encodeURIComponent(formattedStartDate);
-    const encodedEndDate = encodeURIComponent(formattedEndDate);
-
-
-    axios.get(`https://marketdata.tradermade.com/api/v1/timeseries?currency=${baseCurrency + quoteCurrency}&start_date=${encodedStartDate}&end_date=${encodedEndDate}&interval=hourly&period=1&api_key=UkWxobFCeRY4JpKWyoMp`)
+    axios.get(`https://marketdata.tradermade.com/api/v1/timeseries?currency=${baseCurrency + quoteCurrency}&start_date=${formattedStartDate}&end_date=${formattedEndDate}&api_key=UkWxobFCeRY4JpKWyoMp`)
         .then(response => {
-            console.log("API Response:", response.data);
+            console.log(response.data);
 
             const quotes = response.data.quotes;
             if (!quotes || quotes.length === 0) {
                 console.warn('No quotes available for the selected date(s). Please check the dates.');
                 return;
             }
+
             const totalClose = quotes.reduce((acc, quote) => acc + quote.close, 0);
             const averageClose = totalClose / quotes.length;
             const averageValue = (averageClose / 100).toFixed(6);
@@ -419,6 +430,7 @@ function fetchExchangeRate(baseCurrency, quoteCurrency) {
             const lastQuote = quotes[quotes.length - 1];
             const exchange = lastQuote?.close;
             document.getElementById('current-rate').textContent = `${exchange}`;
+
             const timestamps = quotes.map(quote => quote.date);
             const closeRates = quotes.map(quote => quote.close);
 
@@ -431,22 +443,17 @@ function fetchExchangeRate(baseCurrency, quoteCurrency) {
 
 function fetchExchangeRateForLastMonth(baseCurrency, quoteCurrency) {
     const endDate = new Date();
-    endDate.setDate(endDate.getDate() - 1);
-    const startDate = new Date(endDate.getTime() - 30 * 24 * 60 * 60 * 1000);
+   
+    const formattedEndDate = endDate.toISOString().slice(0, 10);
 
-    const formattedEndDate = formatDateToLocal(endDate);
-    const formattedStartDate = formatDateToLocal(startDate);
+    const startDate = new Date(endDate);
+    startDate.setMonth(startDate.getMonth() - 1);
+    const formattedStartDate = startDate.toISOString().slice(0, 10);
 
-
-    const encodedStartDate = encodeURIComponent(formattedStartDate);
-    const encodedEndDate = encodeURIComponent(formattedEndDate);
-
-
-
-    axios.get(`https://marketdata.tradermade.com/api/v1/timeseries?currency=${baseCurrency + quoteCurrency}&start_date=${encodedStartDate}&end_date=${encodedEndDate}&interval=daily&period=1&api_key=UkWxobFCeRY4JpKWyoMp`)
+    axios.get(`https://marketdata.tradermade.com/api/v1/timeseries?currency=${baseCurrency + quoteCurrency}&start_date=${formattedStartDate}&end_date=${formattedEndDate}&api_key=UkWxobFCeRY4JpKWyoMp`)
         .then(response => {
             console.log(response.data);
-            
+
             const quotes = response.data.quotes;
             if (!quotes || quotes.length === 0) {
                 console.warn('No quotes available for the selected date(s). Please check the dates.');
@@ -459,10 +466,10 @@ function fetchExchangeRateForLastMonth(baseCurrency, quoteCurrency) {
             document.getElementById('averg-rate').textContent = `${averageValue}`;
             document.getElementById('average').textContent = `(${averageValue}%)`;
 
-
             const lastQuote = quotes[quotes.length - 1];
             const exchange = lastQuote?.close;
             document.getElementById('current-rate').textContent = `${exchange}`;
+
             const timestamps = quotes.map(quote => quote.date);
             const closeRates = quotes.map(quote => quote.close);
 
@@ -488,7 +495,7 @@ function drawChart(timestamps, closeRates, baseCurrency, quoteCurrency) {
                 label: `${baseCurrency}/${quoteCurrency}`,
                 data: closeRates,
                 borderColor: '#94C64F',
-                backgroundColor: '#F3F9EB', 
+                backgroundColor: '#F3F9EB',
                 borderWidth: 2,
                 fill: true,
                 tension: 0.3
@@ -499,27 +506,29 @@ function drawChart(timestamps, closeRates, baseCurrency, quoteCurrency) {
                 x: {
                     type: 'time',
                     time: {
-                        unit: 'minute' 
+                        unit: 'day' 
                     },
                     grid: {
-                        display: false 
+                        display: false
                     },
                     ticks: {
-                        color: '#999'
+                        color: '#999',
+                        display: false 
                     }
                 },
                 y: {
                     grid: {
-                        display: false 
+                        display: false
                     },
                     ticks: {
-                        color: '#999'
+                        color: '#999',
+                        display: false // Hide the ticks on the y-axis
                     }
                 }
             },
             plugins: {
                 legend: {
-                    display: false 
+                    display: false
                 },
                 tooltip: {
                     callbacks: {
@@ -576,12 +585,12 @@ function updateFlags() {
     document.getElementById('flag1').className = `fi fi-${currencyFlags[baseCurrency]}`;
     document.getElementById('flag2').className = `fi fi-${currencyFlags[quoteCurrency]}`;
 }
-function updateSymbols() {
+/* function updateSymbols() {
     const quoteCurrency = document.getElementById('quote-currency').value; // Get the selected quote currency
     const symbolElement = document.getElementById('symbol'); // The element to display the symbol
   
     symbolElement.textContent = currencySymbols[quoteCurrency] || ''; // Default to empty string if not found
-}
+} */
 
 document.getElementById('base-currency').addEventListener('change', function () {
     const baseCurrency = this.value;
@@ -592,7 +601,7 @@ document.getElementById('base-currency').addEventListener('change', function () 
     fetchExchangeRateForLastHour(baseCurrency, quoteCurrency);
     fetchExchangeRateForLastMonth(baseCurrency, quoteCurrency);
     updateFlags();
-    updateSymbols();
+  /*   updateSymbols(); */
 });
 
 document.getElementById('quote-currency').addEventListener('change', function () {
@@ -604,7 +613,7 @@ document.getElementById('quote-currency').addEventListener('change', function ()
     fetchExchangeRateForLastHour(baseCurrency, quoteCurrency);
     fetchExchangeRateForLastMonth(baseCurrency, quoteCurrency);
     updateFlags();
-    updateSymbols();
+   /*  updateSymbols(); */
 });
 
 
@@ -614,33 +623,33 @@ document.getElementById('day').addEventListener('click', function () {
     const quoteCurrency = document.getElementById('quote-currency').value;
 
     fetchExchangeRate(baseCurrency, quoteCurrency);
-    updateSymbols();
+   /*  updateSymbols(); */
 });
 document.getElementById('week').addEventListener('click', function () {
     const baseCurrency = document.getElementById('base-currency').value;
     const quoteCurrency = document.getElementById('quote-currency').value;
     fetchExchangeRateForWeek(baseCurrency, quoteCurrency);
-    updateSymbols();
+   /*  updateSymbols(); */
 });
 
 document.getElementById('min').addEventListener('click', function () {
     const baseCurrency = document.getElementById('base-currency').value;
     const quoteCurrency = document.getElementById('quote-currency').value;
     fetchExchangeRateForLastMinute(baseCurrency, quoteCurrency);
-    updateSymbols();
+    /* updateSymbols(); */
 });
 
 document.getElementById('hour').addEventListener('click', function () {
     const baseCurrency = document.getElementById('base-currency').value;
     const quoteCurrency = document.getElementById('quote-currency').value;
     fetchExchangeRateForLastHour(baseCurrency, quoteCurrency);
-    updateSymbols();
+    /* updateSymbols(); */
 });
 
 document.getElementById('month').addEventListener('click', function () {
     const baseCurrency = document.getElementById('base-currency').value;
     const quoteCurrency = document.getElementById('quote-currency').value;
     fetchExchangeRateForLastMonth(baseCurrency, quoteCurrency);
-    updateSymbols();
+ /*    updateSymbols(); */
 
 });
